@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -36,13 +38,15 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
-        kotlinCompilerVersion '1.4.10'
+        kotlinCompilerVersion '1.4.20'
     }
 }
 
-def nav_compose_version = "1.0.0-alpha01"
+def nav_compose_version = "1.0.0-alpha03"
 def retrofit_version = "2.9.0"
 def coroutines_version = "1.4.0"
+def hilt_version = '2.28-alpha'
+def hilt_jetpack_version = '1.0.0-alpha02'
 
 dependencies {
 
@@ -67,4 +71,10 @@ dependencies {
     //Async
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+    //DI
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
+    kapt "androidx.hilt:hilt-compiler:$hilt_jetpack_version"
 }
