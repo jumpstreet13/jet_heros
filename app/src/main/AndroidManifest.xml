@@ -3,6 +3,7 @@
     package="com.an9ar.jetheroes">
 
     <application
+        android:name=".JetApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
