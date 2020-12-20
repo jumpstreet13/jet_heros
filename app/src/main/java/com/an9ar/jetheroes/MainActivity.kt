@@ -8,6 +8,7 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
+import com.an9ar.jetheroes.screens.MainNavigationScreen
 import com.an9ar.jetheroes.ui.JetHeroesTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,11 +18,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            JetHeroesTheme {
-                Surface(color = MaterialTheme.colors.background) {
-
-                }
-            }
+            MainNavigationScreen()
         }
     }
 }
