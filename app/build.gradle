@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'dagger.hilt.android.plugin'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.4.10'
 }
 
 android {
@@ -46,6 +47,8 @@ android {
 def ui_tooling_version = "1.0.0-alpha07"
 def nav_compose_version = "1.0.0-alpha04"
 def retrofit_version = "2.9.0"
+def logging_version = "4.7.2"
+def coroutines_adapter_version = "0.9.2"
 def coroutines_version = "1.4.0"
 def hilt_version = '2.28-alpha'
 def hilt_jetpack_version = '1.0.0-alpha02'
@@ -69,6 +72,8 @@ dependencies {
 
     //Network
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$coroutines_adapter_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$logging_version"
 
     //Async
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
