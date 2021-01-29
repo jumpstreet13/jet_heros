@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class HeroResponse(
-    @SerialName("name")
-    val name: String
+    @SerialName("copyright")
+    val copyright: String
 )

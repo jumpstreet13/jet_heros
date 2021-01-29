@@ -25,7 +25,7 @@ object NetworkModule {
         val contentType = "application/json".toMediaTypeOrNull()
             ?: throw IllegalArgumentException("Should be not null")
         return Retrofit.Builder()
-            .baseUrl("https://www.superheroapi.com/api.php/")
+            .baseUrl("https://gateway.marvel.com/")
             .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
