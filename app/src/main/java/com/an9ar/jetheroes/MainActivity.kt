@@ -26,15 +26,18 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var heroRepository: HeroRepository
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Временно, чтобы чекать как работает сэрвис
         lifecycleScope.launch {
             withContext(Dispatchers.Main) {
-                val response = heroRepository.loadHeroes()
+                try {
+                    val response = heroRepository.loadHeroes()
 
-                Log.e("HERO", response.toString())
+                    Log.e("HERO", response.toString())
+                }catch (e: Throwable){
+
+                }
             }
         }
         setContent {

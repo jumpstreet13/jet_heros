@@ -36,6 +36,7 @@ fun SplashScreen(navActions: Actions, lifeCycleScope: LifecycleCoroutineScope) {
                 painter = image,
                 modifier = Modifier
                     .fillMaxSize(),
+                 contentDescription = null,
                 contentScale = ContentScale.FillBounds
             )
             lifeCycleScope.launch {
