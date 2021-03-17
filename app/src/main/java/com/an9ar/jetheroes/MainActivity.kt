@@ -2,9 +2,9 @@ package com.an9ar.jetheroes
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.setContent
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
