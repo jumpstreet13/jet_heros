@@ -11,7 +11,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.an9ar.jetheroes.R
-import com.an9ar.jetheroes.ui.JetHeroesTheme
+import com.an9ar.jetheroes.theme.JetHeroesTheme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
