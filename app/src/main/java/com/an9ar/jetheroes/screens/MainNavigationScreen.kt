@@ -10,6 +10,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.LifecycleCoroutineScope
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 import kotlinx.coroutines.delay
@@ -19,7 +21,10 @@ import kotlinx.coroutines.launch
 fun MainNavigationScreen(navActions: Actions, lifeCycleScope: LifecycleCoroutineScope) {
     JetHeroesTheme {
         Surface(color = MaterialTheme.colors.background) {
+            val navHostController = rememberNavController()
+            NavHost(navController = navHostController, startDestination = Screens.SplashScreen.routeName) {
 
+            }
         }
     }
 }
