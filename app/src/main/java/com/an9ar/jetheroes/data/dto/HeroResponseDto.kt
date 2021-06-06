@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HeroResponseDto(
     @SerialName("copyright")
-    val copyright: String
-/*    @SerialName("results")
-    val results: List<HeroResponse>*/
+    val copyright: String,
+    @SerialName("data")
+    val pagingInfo: MarvelPagingDto
 )

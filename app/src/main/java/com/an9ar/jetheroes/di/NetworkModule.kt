@@ -26,7 +26,10 @@ object NetworkModule {
             ?: throw IllegalArgumentException("Should be not null")
         return Retrofit.Builder()
             .baseUrl("https://gateway.marvel.com/")
-            .addConverterFactory(Json { ignoreUnknownKeys = true }.asConverterFactory(contentType))
+            .addConverterFactory(Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            }.asConverterFactory(contentType))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
             .build()

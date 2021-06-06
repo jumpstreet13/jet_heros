@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.JetHeroes">
         <activity
-            android:name=".MainActivity"
+            android:name=".heroesscreen.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/Theme.JetHeroes.NoActionBar">
             <intent-filter>

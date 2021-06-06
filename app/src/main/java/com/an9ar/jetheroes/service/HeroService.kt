@@ -12,5 +12,7 @@ interface HeroService {
         @Query("ts") ts: Int = 1,
         @Query("apikey") accessToken: String = "7ed0f05931060d1bb3810f9f51018b90",
         @Query("hash") hash: String = "b04215dfce5be688fcf58b1d57fad338",
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
     ): Deferred<HeroResponseDto>
 }

@@ -10,7 +10,7 @@ class HeroRepository @Inject constructor(
     private val heroService: HeroService
 ) {
 
-    suspend fun loadHeroes(): HeroResponseDto {
-        return heroService.getHeroesAsync().await()
+    suspend fun loadHeroes(offset: Int, limit: Int): HeroResponseDto {
+        return heroService.getHeroesAsync(offset = offset, limit = limit).await()
     }
 }
