@@ -7,19 +7,21 @@ import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFact
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.components.SingletonComponent
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
 @Module
-@InstallIn(ActivityComponent::class)
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
     @ExperimentalSerializationApi
+    @Singleton
     @Provides
     fun provideHeroService(okHttpClient: OkHttpClient): HeroService {
         val contentType = "application/json".toMediaTypeOrNull()
@@ -37,6 +39,7 @@ object NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun provideOtherInterceptorOkHttpClient(
         otherInterceptor: HeaderInterceptor
     ): OkHttpClient {

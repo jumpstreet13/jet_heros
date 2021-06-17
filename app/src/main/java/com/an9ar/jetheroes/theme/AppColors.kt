@@ -13,6 +13,7 @@ object AppColors {
     val card = Color(0xFFFFFFFF)
     val cardReverse = Color(0xFF252525)
     val text = Color(0xFF111111)
+    val textAccent = Color(0xFF00BCD4)
     val textSecondary = Color(0xFF333333)
     val textReverse = Color(0xFFEEEEEE)
     val textReverseSecondary = Color(0xFFCCCCCC)
@@ -30,6 +31,7 @@ interface ColorPalette {
     val toolbar: Color
     val card: Color
     val text: Color
+    val textAccent: Color
     val textSecondary: Color
     val uiSurface: Color
     val uiSurfaceInverted: Color
@@ -49,6 +51,7 @@ fun lightColorPalette(): ColorPalette = object : ColorPalette {
     override val toolbar: Color = AppColors.toolbar
     override val card: Color = AppColors.card
     override val text: Color = AppColors.text
+    override val textAccent: Color = AppColors.textAccent
     override val textSecondary: Color = AppColors.textSecondary
     override val uiSurface: Color = AppColors.dark
     override val uiSurfaceInverted: Color = AppColors.light
@@ -72,6 +75,7 @@ fun darkColorPalette(): ColorPalette = object : ColorPalette {
     override val toolbar: Color = AppColors.toolbarReverse
     override val card: Color = AppColors.cardReverse
     override val text: Color = AppColors.textReverse
+    override val textAccent: Color = AppColors.textAccent
     override val textSecondary: Color = AppColors.textReverseSecondary
     override val uiSurface: Color = AppColors.light
     override val uiSurfaceInverted: Color = AppColors.dark
