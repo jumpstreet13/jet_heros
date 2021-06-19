@@ -10,3 +10,7 @@ data class ThumbNailDto(
     @SerialName("path")
     val path: String,
 )
+
+fun ThumbNailDto.getImageUrl(): String {
+    return "${this.path}.${this.extension}"
+}

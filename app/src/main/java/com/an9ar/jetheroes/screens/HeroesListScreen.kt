@@ -10,16 +10,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.data.dto.HeroResponse
+import com.an9ar.jetheroes.data.dto.getImageUrl
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
 import com.google.accompanist.glide.rememberGlidePainter
@@ -47,7 +51,7 @@ fun HeroesListContent(
                 title = {
                     Text(
                         text = "Marvel heroes",
-                        style = AppTheme.typography.h3,
+                        style = AppTheme.typography.textMediumBold,
                         color = AppTheme.colors.text
                     )
                 }
@@ -65,6 +69,36 @@ fun HeroesListContent(
                         navHostController = navHostController
                     )
                 }
+
+                lazyMovieItems.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                        }
+                        loadState.append is LoadState.Loading -> {
+                            item { LoadingItem() }
+                        }
+                        loadState.refresh is LoadState.Error -> {
+                            val e = lazyMovieItems.loadState.refresh as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = e.error.localizedMessage!!,
+                                    modifier = Modifier.fillParentMaxSize(),
+                                    onClickRetry = { retry() }
+                                )
+                            }
+                        }
+                        loadState.append is LoadState.Error -> {
+                            val e = lazyMovieItems.loadState.append as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = e.error.localizedMessage!!,
+                                    onClickRetry = { retry() }
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -79,24 +113,24 @@ fun HeroItem(
         backgroundColor = AppTheme.colors.card,
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .clickable(onClick = {
-                navHostController.navigate("// todo ")
-            })
+            .padding(horizontal = 8.dp, vertical = 8.dp)
+            .clickable(onClick = { navHostController.navigate("hero/${hero.id}") })
             .fillMaxWidth()
+            .wrapContentHeight()
     ) {
         Row(
             modifier = Modifier
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp)
+                .padding(16.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            verticalAlignment = Alignment.CenterVertically,
+
+            ) {
             HeroTitle(
                 hero.name,
                 modifier = Modifier.weight(1f)
             )
-            HeroImage("${hero.thumbnail.path}.${hero.thumbnail.extension}")
+            HeroImage(hero.thumbnail.getImageUrl())
         }
     }
 }
@@ -109,7 +143,6 @@ fun HeroImage(imageUrl: String) {
             request = imageUrl,
             fadeIn = true
         ),
-
         contentDescription = stringResource(R.string.hero_image_description),
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -130,6 +163,54 @@ fun HeroTitle(
         text = title,
         maxLines = 2,
         style = MaterialTheme.typography.h6,
-        overflow = TextOverflow.Ellipsis
+        overflow = TextOverflow.Ellipsis,
+        textAlign = TextAlign.Center
     )
+}
+
+@Composable
+fun LoadingItem() {
+    CircularProgressIndicator(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    )
+}
+
+@Composable
+fun LoadingView(
+    modifier: Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+    }
+}
+
+@Composable
+fun ErrorItem(
+    message: String,
+    modifier: Modifier = Modifier,
+    onClickRetry: () -> Unit
+) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = message,
+            maxLines = 1,
+            modifier = Modifier.weight(1f),
+            style = MaterialTheme.typography.h6,
+            color = Color.Red
+        )
+        OutlinedButton(onClick = onClickRetry) {
+            Text(text = "Try again")
+        }
+    }
 }
