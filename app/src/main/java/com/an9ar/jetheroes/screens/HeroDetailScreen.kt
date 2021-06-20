@@ -26,7 +26,6 @@ import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
 import com.google.accompanist.glide.rememberGlidePainter
 
-
 @Composable
 fun HeroDetailScreen(
     navHostController: NavHostController,
@@ -134,7 +133,6 @@ fun BigHeroInfo(heroInfo: HeroInfoDto) {
         )
     }
 }
-
 
 @Composable
 fun HeroInfoLoading(
