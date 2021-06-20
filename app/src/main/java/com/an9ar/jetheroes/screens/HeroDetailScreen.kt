@@ -97,16 +97,18 @@ fun HeroInfoContent(
 @Composable
 fun BigHeroImage(url: String) {
     Card(
-        shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),
+        shape = RoundedCornerShape(32.dp),
         backgroundColor = AppTheme.colors.card,
         modifier = Modifier
             .fillMaxWidth()
             .height(240.dp)
+            .padding(16.dp)
     ) {
         Image(
             painter = rememberGlidePainter(
                 request = url,
-                fadeIn = true
+                fadeIn = true,
+                requestBuilder = { placeholder(R.drawable.default_image) }
             ),
             contentDescription = stringResource(R.string.hero_image_description),
             contentScale = ContentScale.FillBounds,
@@ -118,7 +120,9 @@ fun BigHeroImage(url: String) {
 @Composable
 fun BigHeroInfo(heroInfo: HeroInfoDto) {
     Column(
-        modifier = Modifier.background(AppTheme.colors.background)
+        modifier = Modifier
+            .background(AppTheme.colors.background)
+            .padding(16.dp)
     ) {
         Text(
             text = heroInfo.name,

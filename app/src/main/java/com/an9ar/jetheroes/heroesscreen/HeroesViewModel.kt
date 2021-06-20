@@ -25,6 +25,10 @@ class HeroesViewModel
     }.flow
 
     suspend fun fetchHeroInfo(heroId: Long): GreatResult<HeroInfoDto> {
-        return heroRepository.loadHeroInfoById(heroId)
+        return try {
+            heroRepository.loadHeroInfoById(heroId)
+        } catch (exception: Exception) {
+            GreatResult.Error(exception)
+        }
     }
 }
