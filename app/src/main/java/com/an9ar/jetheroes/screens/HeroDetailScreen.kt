@@ -32,6 +32,7 @@ fun HeroDetailScreen(
     heroesViewModel: HeroesViewModel,
     heroId: Long
 ) {
+    // we can provide it like that val heroesViewModel = viewModel<HeroesViewModel>()
     Scaffold(
         topBar = {
             TopAppBar(
