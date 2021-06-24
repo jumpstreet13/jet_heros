@@ -10,7 +10,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 
 @Composable
@@ -18,7 +17,7 @@ fun SplashScreen(
     navHostController: NavHostController
 ) {
     SplashContent()
-    LaunchedEffect(key1 = Dispatchers.IO) {
+    LaunchedEffect(true) {
         delay(500)
         navHostController.navigate("heroesList") {
             popUpTo("splash") { inclusive = true }
