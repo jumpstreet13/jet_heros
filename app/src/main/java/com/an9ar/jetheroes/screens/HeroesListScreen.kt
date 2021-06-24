@@ -124,13 +124,14 @@ fun HeroItem(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-
-            ) {
+        ) {
             HeroTitle(
-                hero.name,
+                title = hero.name,
                 modifier = Modifier.weight(1f)
             )
-            HeroImage(hero.thumbnail.getImageUrl())
+            HeroImage(
+                imageUrl = hero.thumbnail.getImageUrl()
+            )
         }
     }
 }

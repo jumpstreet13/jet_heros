@@ -164,7 +164,7 @@ fun HeroInfoError(
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = "You are fucked up",
+            text = "You are facked up",
             color = AppTheme.colors.error
         )
     }
