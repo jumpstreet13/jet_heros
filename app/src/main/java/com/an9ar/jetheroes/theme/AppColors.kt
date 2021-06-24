@@ -8,6 +8,8 @@ object AppColors {
     val primary = Color(0xFF3366FF)
     val background = Color(0xFFE7E7E7)
     val backgroundReverse = Color(0xFF141414)
+    val iconColor = Color(0xFF141414)
+    val iconColorReverse = Color(0xFFFFFFFF)
     val toolbar = Color(0xFFE7E7E7)
     val toolbarReverse = Color(0xFF1C1C1C)
     val card = Color(0xFFFFFFFF)
@@ -39,6 +41,7 @@ interface ColorPalette {
     val warning: Color
     val error: Color
     val light: Color
+    val iconColor: Color
     val dark: Color
     val transparent: Color
 
@@ -59,6 +62,7 @@ fun lightColorPalette(): ColorPalette = object : ColorPalette {
     override val warning: Color = AppColors.warning
     override val error: Color = AppColors.error
     override val light: Color = AppColors.light
+    override val iconColor: Color = AppColors.iconColor
     override val dark: Color = AppColors.dark
     override val transparent: Color = AppColors.transparent
 
@@ -84,6 +88,7 @@ fun darkColorPalette(): ColorPalette = object : ColorPalette {
     override val error: Color = AppColors.error
     override val light: Color = AppColors.light
     override val dark: Color = AppColors.dark
+    override val iconColor: Color = AppColors.iconColorReverse
     override val transparent: Color = AppColors.transparent
 
     override val materialColors: Colors = lightColors(

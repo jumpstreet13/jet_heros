@@ -163,9 +163,10 @@ fun HeroTitle(
         modifier = modifier,
         text = title,
         maxLines = 2,
-        style = MaterialTheme.typography.h6,
+        style = AppTheme.typography.textMediumBold,
         overflow = TextOverflow.Ellipsis,
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        color = AppTheme.colors.text
     )
 }
 

@@ -47,6 +47,7 @@ fun HeroDetailScreen(
                     IconButton(onClick = { navHostController.navigateUp() }) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
+                            tint = AppTheme.colors.iconColor,
                             contentDescription = null
                         )
                     }
@@ -126,10 +127,12 @@ fun BigHeroInfo(heroInfo: HeroInfoDto) {
     ) {
         Text(
             text = heroInfo.name,
+            color = AppTheme.colors.text,
             style = AppTheme.typography.h3
         )
         Text(
             text = heroInfo.description,
+            color = AppTheme.colors.text,
             style = AppTheme.typography.textMediumBold
         )
     }
