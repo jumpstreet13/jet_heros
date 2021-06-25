@@ -32,7 +32,6 @@ fun SplashContent() {
         painter = image,
         modifier = Modifier
             .fillMaxSize(),
-        contentDescription = null,
-        contentScale = ContentScale.FillBounds
+        contentDescription = null
     )
 }
