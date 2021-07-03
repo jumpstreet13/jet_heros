@@ -143,6 +143,7 @@ fun HeroImage(imageUrl: String) {
         painter = rememberGlidePainter(
             request = imageUrl,
             fadeIn = true,
+            // todo плохая идея
             requestBuilder = { placeholder(R.drawable.default_image) }
         ),
         contentDescription = stringResource(R.string.hero_image_description),

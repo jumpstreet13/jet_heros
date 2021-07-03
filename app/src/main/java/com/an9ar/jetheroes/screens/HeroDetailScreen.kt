@@ -32,7 +32,7 @@ fun HeroDetailScreen(
     heroesViewModel: HeroesViewModel,
     heroId: Long
 ) {
-    // we can provide it like that val heroesViewModel = viewModel<HeroesViewModel>()
+  // val heroesViewModel = viewModel<HeroesViewModel>()
     Scaffold(
         topBar = {
             TopAppBar(
@@ -82,6 +82,7 @@ fun HeroInfoContent(
     heroInfoDto: HeroInfoDto,
     modifier: Modifier
 ) {
+    // todo не использовать !!
     LazyColumn(
         modifier = modifier
             .background(AppTheme.colors.background)
