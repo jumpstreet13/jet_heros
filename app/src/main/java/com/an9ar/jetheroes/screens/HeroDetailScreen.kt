@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -105,6 +106,55 @@ fun HeroInfoContent(
         BigHeroImage(url = heroInfoDto.thumbnail.getImageUrl())
         Spacer(modifier = Modifier.height(16.dp))
         BigHeroInfo(heroInfo = heroInfoDto)
+        BigHeroComics()
+    }
+}
+
+@Composable
+fun BigHeroComics() {
+    Column() {
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+        ComicsItem()
+    }
+}
+
+@Composable
+fun ComicsItem() {
+    Row(
+        modifier = Modifier.padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Image(
+            painter = rememberGlidePainter(
+                request = "https://static.wikia.nocookie.net/character-power/images/8/8f/DC_Comics.png/revision/latest/scale-to-width-down/700?cb=20190203204448&path-prefix=ru",
+                fadeIn = true,
+            ),
+            contentDescription = "Comics",
+            modifier = Modifier
+                .size(
+                    height = 64.dp,
+                    width = 84.dp
+                )
+                .padding(end = 16.dp)
+                .clip(RoundedCornerShape(6.dp)),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = "It is a rellly cool comics",
+            color = AppTheme.colors.text,
+            style = AppTheme.typography.textMediumBold
+        )
     }
 }
 
