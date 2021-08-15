@@ -3,15 +3,13 @@ package com.an9ar.jetheroes.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -25,6 +23,9 @@ import com.an9ar.jetheroes.data.dto.getImageUrl
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
 import com.google.accompanist.glide.rememberGlidePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import kotlinx.coroutines.launch
 
 @Composable
 fun HeroDetailScreen(
@@ -57,6 +58,8 @@ fun HeroDetailScreen(
         },
         content = { innerPadding ->
             val modifier = Modifier.padding(innerPadding)
+            val coroutineScope = rememberCoroutineScope()
+            val swipeRefreshState = rememberSwipeRefreshState(false)
             val heroInfo =
                 remember { mutableStateOf<GreatResult<HeroInfoDto>>(GreatResult.Progress) }
 
@@ -65,13 +68,24 @@ fun HeroDetailScreen(
                 heroInfo.value = info
             }
 
-            when (val heroInfoResult = heroInfo.value) {
-                is GreatResult.Progress -> HeroInfoLoading(modifier)
-                is GreatResult.Success -> HeroInfoContent(
-                    heroInfoDto = heroInfoResult.data,
-                    modifier = modifier
-                )
-                is GreatResult.Error -> HeroInfoError(modifier)
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = {
+                    coroutineScope.launch {
+                        swipeRefreshState.isRefreshing = true
+                        heroInfo.value = heroesViewModel.fetchHeroInfo(heroId = heroId)
+                        swipeRefreshState.isRefreshing = false
+                    }
+                }
+            ) {
+                when (val heroInfoResult = heroInfo.value) {
+                    is GreatResult.Progress -> HeroInfoLoading(modifier)
+                    is GreatResult.Success -> HeroInfoContent(
+                        heroInfoDto = heroInfoResult.data,
+                        modifier = modifier
+                    )
+                    is GreatResult.Error -> HeroInfoError(modifier)
+                }
             }
         }
     )
@@ -82,17 +96,15 @@ fun HeroInfoContent(
     heroInfoDto: HeroInfoDto,
     modifier: Modifier
 ) {
-    // todo не использовать !!
-    LazyColumn(
+    Column(
         modifier = modifier
             .background(AppTheme.colors.background)
             .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-        item {
-            BigHeroImage(url = heroInfoDto.thumbnail.getImageUrl())
-            Spacer(modifier = Modifier.height(16.dp))
-            BigHeroInfo(heroInfo = heroInfoDto)
-        }
+        BigHeroImage(url = heroInfoDto.thumbnail.getImageUrl())
+        Spacer(modifier = Modifier.height(16.dp))
+        BigHeroInfo(heroInfo = heroInfoDto)
     }
 }
 
@@ -145,8 +157,9 @@ fun HeroInfoLoading(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        contentAlignment = Alignment.Center,
     ) {
         CircularProgressIndicator(
             color = AppTheme.colors.primary,
@@ -161,7 +174,8 @@ fun HeroInfoError(
 ) {
     Box(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
         contentAlignment = Alignment.Center
     ) {
         Text(

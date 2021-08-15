@@ -26,8 +26,7 @@ class HeroesViewModel
         PagingConfig(pageSize = 20)
     ) {
         HeroDataSource(heroRepository)
-    }.flow
-      .cachedIn(viewModelScope)
+    }.flow.cachedIn(viewModelScope)
 
     suspend fun fetchHeroInfo(heroId: Long): GreatResult<HeroInfoDto> {
         return try {
