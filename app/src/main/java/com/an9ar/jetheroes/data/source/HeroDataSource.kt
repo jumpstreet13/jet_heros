@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.an9ar.jetheroes.data.HeroRepository
 import com.an9ar.jetheroes.data.dto.HeroResponse
 
-class HeroDataSource(
+class HeroDataSource constructor(
     private val repository: HeroRepository
 ) : PagingSource<Int, HeroResponse>() {
 
@@ -25,7 +25,6 @@ class HeroDataSource(
     }
 
     override fun getRefreshKey(state: PagingState<Int, HeroResponse>): Int? {
-        // todo возвращать правильный ключ
-        return null
+        return 0
     }
 }

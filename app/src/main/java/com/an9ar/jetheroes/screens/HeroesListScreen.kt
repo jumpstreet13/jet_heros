@@ -1,5 +1,6 @@
 package com.an9ar.jetheroes.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -27,6 +29,8 @@ import com.an9ar.jetheroes.data.dto.getImageUrl
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
 import com.google.accompanist.glide.rememberGlidePainter
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun HeroesListScreen(
@@ -61,40 +65,60 @@ fun HeroesListContent(
         Surface(color = AppTheme.colors.background) {
             val lazyMovieItems: LazyPagingItems<HeroResponse> =
                 heroesViewModel.heroes.collectAsLazyPagingItems()
+            val swipeRefreshState = rememberSwipeRefreshState(false)
+            val context = LocalContext.current
 
-            LazyColumn {
-                items(lazyMovieItems) { hero ->
-                    HeroItem(
-                        hero = hero!!,
-                        navHostController = navHostController
-                    )
-                }
+            SwipeRefresh(
+                state = swipeRefreshState,
+                onRefresh = { lazyMovieItems.refresh() }
+            ) {
+                LazyColumn {
+                    items(lazyMovieItems) { hero ->
+                        HeroItem(
+                            hero = hero!!,
+                            navHostController = navHostController
+                        )
+                    }
 
-                lazyMovieItems.apply {
-                    when {
-                        loadState.refresh is LoadState.Loading -> {
-                            item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                        }
-                        loadState.append is LoadState.Loading -> {
-                            item { LoadingItem() }
-                        }
-                        loadState.refresh is LoadState.Error -> {
-                            val e = lazyMovieItems.loadState.refresh as LoadState.Error
-                            item {
-                                ErrorItem(
-                                    message = e.error.localizedMessage!!,
-                                    modifier = Modifier.fillParentMaxSize(),
-                                    onClickRetry = { retry() }
-                                )
+                    lazyMovieItems.apply {
+                        when {
+                            loadState.refresh is LoadState.Loading -> {
+                                if (swipeRefreshState.isSwipeInProgress) {
+                                    swipeRefreshState.isRefreshing = false
+                                } else {
+                                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                                }
                             }
-                        }
-                        loadState.append is LoadState.Error -> {
-                            val e = lazyMovieItems.loadState.append as LoadState.Error
-                            item {
-                                ErrorItem(
-                                    message = e.error.localizedMessage!!,
-                                    onClickRetry = { retry() }
-                                )
+                            loadState.append is LoadState.Loading -> {
+                                item { LoadingItem() }
+                            }
+                            loadState.refresh is LoadState.Error -> {
+                                val e = lazyMovieItems.loadState.refresh as LoadState.Error
+                                if (lazyMovieItems.itemCount > 0) {
+                                    Toast.makeText(
+                                        context,
+                                        e.error.localizedMessage,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                item {
+                                    if (lazyMovieItems.itemCount == 0) {
+                                        ErrorItem(
+                                            message = e.error.localizedMessage!!,
+                                            modifier = Modifier.fillParentMaxSize(),
+                                            onClickRetry = { retry() }
+                                        )
+                                    }
+                                }
+                            }
+                            loadState.append is LoadState.Error -> {
+                                val e = lazyMovieItems.loadState.append as LoadState.Error
+                                item {
+                                    ErrorItem(
+                                        message = e.error.localizedMessage!!,
+                                        onClickRetry = { retry() }
+                                    )
+                                }
                             }
                         }
                     }

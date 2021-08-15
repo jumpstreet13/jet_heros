@@ -32,7 +32,7 @@ fun HeroDetailScreen(
     heroesViewModel: HeroesViewModel,
     heroId: Long
 ) {
-  // val heroesViewModel = viewModel<HeroesViewModel>()
+    // val heroesViewModel = viewModel<HeroesViewModel>()
     Scaffold(
         topBar = {
             TopAppBar(
