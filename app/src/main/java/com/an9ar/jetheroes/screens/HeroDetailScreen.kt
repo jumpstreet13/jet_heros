@@ -70,6 +70,7 @@ fun HeroDetailScreen(
             }
 
             SwipeRefresh(
+                modifier = modifier,
                 state = swipeRefreshState,
                 onRefresh = {
                     coroutineScope.launch {
@@ -80,10 +81,9 @@ fun HeroDetailScreen(
                 }
             ) {
                 when (val heroInfoResult = heroInfo.value) {
-                    is GreatResult.Progress -> HeroInfoLoading(modifier)
+                    is GreatResult.Progress -> HeroInfoLoading()
                     is GreatResult.Success -> HeroInfoContent(
-                        heroInfoDto = heroInfoResult.data,
-                        modifier = modifier
+                        heroInfoDto = heroInfoResult.data
                     )
                     is GreatResult.Error -> HeroInfoError(modifier)
                 }
@@ -95,7 +95,7 @@ fun HeroDetailScreen(
 @Composable
 fun HeroInfoContent(
     heroInfoDto: HeroInfoDto,
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
@@ -203,7 +203,7 @@ fun BigHeroInfo(heroInfo: HeroInfoDto) {
 
 @Composable
 fun HeroInfoLoading(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
@@ -220,7 +220,7 @@ fun HeroInfoLoading(
 
 @Composable
 fun HeroInfoError(
-    modifier: Modifier
+    modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier
