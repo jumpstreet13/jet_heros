@@ -1,5 +1,6 @@
 package com.an9ar.jetheroes.data.dto
 
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponse
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

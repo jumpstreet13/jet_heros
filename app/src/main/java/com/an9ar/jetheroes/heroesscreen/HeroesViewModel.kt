@@ -7,10 +7,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.an9ar.jetheroes.data.HeroRepository
+import com.an9ar.jetheroes.data.repository.HeroRepository
 import com.an9ar.jetheroes.data.dto.GreatResult
-import com.an9ar.jetheroes.data.dto.HeroInfoDto
-import com.an9ar.jetheroes.data.dto.HeroResponse
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroInfoDto
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponse
 import com.an9ar.jetheroes.data.source.HeroDataSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
@@ -14,7 +13,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navHostController: NavHostController
+        navHostController: NavHostController
 ) {
     SplashContent()
     LaunchedEffect(true) {
@@ -29,9 +28,9 @@ fun SplashScreen(
 fun SplashContent() {
     val image: Painter = painterResource(id = R.drawable.marvel_logo)
     Image(
-        painter = image,
-        modifier = Modifier
-            .fillMaxSize(),
-        contentDescription = null
+            painter = image,
+            modifier = Modifier
+                    .fillMaxSize(),
+            contentDescription = null
     )
 }

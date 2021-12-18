@@ -1,10 +1,10 @@
-package com.an9ar.jetheroes.data.dto
+package com.an9ar.jetheroes.data.dto.comicsinfo
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class HeroInfoResponse(
+data class ComicsWrapperResponse(
     @SerialName("data")
-    val info: HeroInfoWrapperDto
+    val info: ComicsWrapperDto
 )

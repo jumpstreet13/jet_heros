@@ -1,5 +1,6 @@
-package com.an9ar.jetheroes.data.dto
+package com.an9ar.jetheroes.data.dto.heroinfo
 
+import com.an9ar.jetheroes.data.dto.MarvelPagingDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 

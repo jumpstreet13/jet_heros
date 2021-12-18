@@ -75,6 +75,7 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:$nav_compose_version"
     implementation "androidx.activity:activity-compose:$compose_activity"
     implementation "androidx.constraintlayout:constraintlayout-compose:$compose_constraint_layout"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
 
     //Network
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"

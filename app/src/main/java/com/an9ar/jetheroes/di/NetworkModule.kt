@@ -20,32 +20,35 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    private val json = Json {
+        ignoreUnknownKeys = true
+        isLenient = true
+    }
+
     @ExperimentalSerializationApi
     @Singleton
     @Provides
     fun provideHeroService(okHttpClient: OkHttpClient): HeroService {
         val contentType = "application/json".toMediaTypeOrNull()
-            ?: throw IllegalArgumentException("Should be not null")
+                ?: throw IllegalArgumentException("Should be not null")
         return Retrofit.Builder()
-            .baseUrl("https://gateway.marvel.com/")
-            .addConverterFactory(Json {
-                ignoreUnknownKeys = true
-                isLenient = true
-            }.asConverterFactory(contentType))
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .client(okHttpClient)
-            .build()
-            .create(HeroService::class.java)
+                .baseUrl("https://gateway.marvel.com/")
+                .addConverterFactory(json.asConverterFactory(contentType))
+                .addCallAdapterFactory(CoroutineCallAdapterFactory())
+                .client(okHttpClient)
+                .build()
+                .create(HeroService::class.java)
     }
 
     @Provides
     @Singleton
     fun provideOtherInterceptorOkHttpClient(
-        otherInterceptor: HeaderInterceptor
+            otherInterceptor: HeaderInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(otherInterceptor)
-            .build()
+                .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                .addInterceptor(AuthorizationInterceptor())
+                .addInterceptor(otherInterceptor)
+                .build()
     }
 }

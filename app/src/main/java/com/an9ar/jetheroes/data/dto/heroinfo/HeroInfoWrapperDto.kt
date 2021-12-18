@@ -1,4 +1,4 @@
-package com.an9ar.jetheroes.data.dto
+package com.an9ar.jetheroes.data.dto.heroinfo
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

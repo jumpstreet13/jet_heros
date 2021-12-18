@@ -1,8 +1,8 @@
-package com.an9ar.jetheroes.data
+package com.an9ar.jetheroes.data.repository
 
 import com.an9ar.jetheroes.data.dto.GreatResult
-import com.an9ar.jetheroes.data.dto.HeroInfoDto
-import com.an9ar.jetheroes.data.dto.HeroResponseDto
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroInfoDto
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponseDto
 import com.an9ar.jetheroes.service.HeroService
 import javax.inject.Inject
 import javax.inject.Singleton

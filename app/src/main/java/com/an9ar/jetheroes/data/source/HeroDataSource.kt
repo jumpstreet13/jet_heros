@@ -2,8 +2,8 @@ package com.an9ar.jetheroes.data.source
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.an9ar.jetheroes.data.HeroRepository
-import com.an9ar.jetheroes.data.dto.HeroResponse
+import com.an9ar.jetheroes.data.repository.HeroRepository
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponse
 
 class HeroDataSource constructor(
     private val repository: HeroRepository
