@@ -31,4 +31,10 @@ interface HeroService {
         @Url url: String,
         @Query("ts") ts: Int = 1
     ): Deferred<ComicsWrapperResponse>
+
+    @GET("v1/public/characters/{comicsId}/comics")
+    suspend fun getComicsInfoById(
+        @Path("comicsId") comicsId: String,
+        @Query("ts") ts: Int = 1
+    ): ComicsWrapperResponse
 }

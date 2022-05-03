@@ -18,8 +18,8 @@ import com.an9ar.jetheroes.theme.JetHeroesTheme
 
 @Composable
 fun JetHeroessApp(
-        heroesViewModel: HeroesViewModel,
-        comicsViewModel: ComicsViewModel
+    heroesViewModel: HeroesViewModel,
+    comicsViewModel: ComicsViewModel
 ) {
     JetHeroesTheme {
         Surface(color = AppTheme.colors.background) {
@@ -30,25 +30,31 @@ fun JetHeroessApp(
                 }
                 composable("heroesList") {
                     HeroesListScreen(
-                            navHostController = navController,
-                            heroesViewModel = heroesViewModel
-                    )
-                }
-                composable("comicsInfo") {
-                    ComicsScreen(
-                            navHostController = navController,
-                            viewModel = comicsViewModel
+                        navHostController = navController,
+                        heroesViewModel = heroesViewModel
                     )
                 }
                 composable(
-                        "hero/{heroId}",
-                        arguments = listOf(navArgument("heroId") { type = NavType.LongType })
+                    "comicsInfo/{comicsId}",
+                    arguments = listOf(navArgument("comicsId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    backStackEntry.arguments?.getString("comicsId")?.let {
+                        ComicsScreen(
+                            navHostController = navController,
+                            viewModel = comicsViewModel,
+                            comicsId = it
+                        )
+                    }
+                }
+                composable(
+                    "hero/{heroId}",
+                    arguments = listOf(navArgument("heroId") { type = NavType.LongType })
                 ) { backStackEntry ->
                     backStackEntry.arguments?.getLong("heroId")?.let { id ->
                         HeroDetailScreen(
-                                navHostController = navController,
-                                heroesViewModel = heroesViewModel,
-                                heroId = id
+                            navHostController = navController,
+                            heroesViewModel = heroesViewModel,
+                            heroId = id
                         )
                     }
                 }

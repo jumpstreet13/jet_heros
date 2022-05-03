@@ -16,4 +16,8 @@ class ComicsRepository @Inject constructor(
             service.getComicsInfo(url).await().info
         )
     }
+
+    suspend fun loadComicsById(id: String): GreatResult<ComicsWrapperDto> {
+        return GreatResult.Success(service.getComicsInfoById(id).info)
+    }
 }

@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class HeroResponse(
         @SerialName("name")
-    val name: String,
+        val name: String,
         @SerialName("thumbnail")
-    val thumbnail: ThumbNailDto,
+        val thumbnail: ThumbNailDto,
         @SerialName("id")
-    val id: Long
+        val id: Long
 )

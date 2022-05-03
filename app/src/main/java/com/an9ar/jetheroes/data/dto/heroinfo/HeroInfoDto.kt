@@ -11,5 +11,7 @@ data class HeroInfoDto(
     @SerialName("description")
     val description: String,
     @SerialName("thumbnail")
-    val thumbnail: ThumbNailDto
+    val thumbnail: ThumbNailDto,
+    @SerialName("comics")
+    val comicsDto: ComicsDto
 )

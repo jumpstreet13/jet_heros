@@ -46,18 +46,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun ComicsScreen(
     navHostController: NavHostController,
-    viewModel: ComicsViewModel
+    viewModel: ComicsViewModel,
+    comicsId: String
 ) {
     ComicsListContent(
         navHostController = navHostController,
-        viewModel = viewModel
+        viewModel = viewModel,
+        comicsId = comicsId
     )
 }
 
 @Composable
 fun ComicsListContent(
     navHostController: NavHostController,
-    viewModel: ComicsViewModel
+    viewModel: ComicsViewModel,
+    comicsId: String
 ) {
     Scaffold(
         topBar = {
@@ -82,7 +85,8 @@ fun ComicsListContent(
                 remember { mutableStateOf<GreatResult<ComicsWrapperDto>>(GreatResult.Progress) }
 
             LaunchedEffect(Unit) {
-                val info = viewModel.fetchComicsInfo("http://gateway.marvel.com/v1/public/characters/1017100/comics")
+                //val info = viewModel.fetchComicsInfo("http://gateway.marvel.com/v1/public/characters/1017100/comics")
+                val info = viewModel.fetchComicsInfoById(comicsId)
                 comicsInfo.value = info
             }
 
@@ -92,19 +96,21 @@ fun ComicsListContent(
                 onRefresh = {
                     coroutineScope.launch {
                         swipeRefreshState.isRefreshing = true
-                        comicsInfo.value =
-                            viewModel.fetchComicsInfo("http://gateway.marvel.com/v1/public/characters/1017100/comics")
+                        comicsInfo.value = viewModel.fetchComicsInfoById(comicsId)
+                        //viewModel.fetchComicsInfo("http://gateway.marvel.com/v1/public/characters/1017100/comics")
                         swipeRefreshState.isRefreshing = false
                     }
                 }
             ) {
                 when (val comicsInfoRequest = comicsInfo.value) {
-                    is GreatResult.Progress -> {}/*HeroInfoLoading()*/
+                    is GreatResult.Progress -> {
+                    }/*HeroInfoLoading()*/
                     is GreatResult.Success -> Comics(
                         comicsWrapper = comicsInfoRequest.data,
                         navHostController = navHostController
                     )
-                    is GreatResult.Error -> {}/*HeroInfoError(modifier)*/
+                    is GreatResult.Error -> {
+                    }/*HeroInfoError(modifier)*/
                 }
             }
         }

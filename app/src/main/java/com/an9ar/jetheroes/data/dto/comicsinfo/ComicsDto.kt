@@ -9,7 +9,7 @@ data class ComicsDto(
     @SerialName("title")
     val title: String,
     @SerialName("description")
-    val description: String,
+    val description: String?,
     @SerialName("thumbnail")
     val thumbnail: ThumbNailDto
 )

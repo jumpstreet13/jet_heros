@@ -35,6 +35,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.data.dto.GreatResult
@@ -126,16 +127,19 @@ fun HeroInfoContent(
         BigHeroImage(url = heroInfoDto.thumbnail.getImageUrl())
         Spacer(modifier = Modifier.height(16.dp))
         BigHeroInfo(heroInfo = heroInfoDto)
-        ComicsItem(navHostController)
+        ComicsItem(navHostController, heroInfoDto)
     }
 }
 
 @Composable
-fun ComicsItem(navHostController: NavHostController) {
+fun ComicsItem(
+    navHostController: NavHostController,
+    heroInfoDto: HeroInfoDto
+) {
     Row(
         modifier = Modifier
             .padding(16.dp)
-            .clickable { navHostController.navigate("comicsInfo") },
+            .clickable { navHostController.navigate("comicsInfo/${heroInfoDto.comicsDto.collectionUri.toUri().path?.split("/")?.get(4)}") },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

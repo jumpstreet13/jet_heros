@@ -21,4 +21,12 @@ class ComicsViewModel
             GreatResult.Error(exception)
         }
     }
+
+    suspend fun fetchComicsInfoById(id: String): GreatResult<ComicsWrapperDto> {
+        return try {
+            comicsRepository.loadComicsById(id)
+        } catch (exception: Exception) {
+            GreatResult.Error(exception)
+        }
+    }
 }
