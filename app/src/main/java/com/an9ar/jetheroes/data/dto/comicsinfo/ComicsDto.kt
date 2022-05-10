@@ -6,6 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ComicsDto(
+    @SerialName("id")
+    val id: String,
     @SerialName("title")
     val title: String,
     @SerialName("description")

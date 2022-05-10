@@ -9,10 +9,7 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
 import com.an9ar.jetheroes.heroesscreen.ComicsViewModel
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
-import com.an9ar.jetheroes.screens.ComicsScreen
-import com.an9ar.jetheroes.screens.HeroDetailScreen
-import com.an9ar.jetheroes.screens.HeroesListScreen
-import com.an9ar.jetheroes.screens.SplashScreen
+import com.an9ar.jetheroes.screens.*
 import com.an9ar.jetheroes.theme.AppTheme
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 
@@ -55,6 +52,18 @@ fun JetHeroessApp(
                             navHostController = navController,
                             heroesViewModel = heroesViewModel,
                             heroId = id
+                        )
+                    }
+                }
+                composable(
+                    "comicInfo/{comicInfoId}",
+                    arguments = listOf(navArgument("comicInfoId") { type = NavType.StringType })
+                ) { backStackEntry ->
+                    backStackEntry.arguments?.getString("comicInfoId")?.let { id ->
+                        ComicDetailInfoScreen(
+                            navHostController = navController,
+                            viewModel = comicsViewModel,
+                            comicsId = id
                         )
                     }
                 }

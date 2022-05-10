@@ -1,6 +1,7 @@
 package com.an9ar.jetheroes.data.repository
 
 import com.an9ar.jetheroes.data.dto.GreatResult
+import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsDto
 import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsWrapperDto
 import com.an9ar.jetheroes.service.HeroService
 import javax.inject.Inject
@@ -11,9 +12,9 @@ class ComicsRepository @Inject constructor(
     private val service: HeroService
 ) {
 
-    suspend fun loadComics(url: String): GreatResult<ComicsWrapperDto> {
+    suspend fun loadComicDetailInfo(id: String): GreatResult<ComicsDto> {
         return GreatResult.Success(
-            service.getComicsInfo(url).await().info
+            service.getComicsDetailInfo(id).info.results.first()
         )
     }
 

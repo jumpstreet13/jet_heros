@@ -13,12 +13,12 @@ class HeroRepository @Inject constructor(
 ) {
 
     suspend fun loadHeroes(offset: Int, limit: Int): HeroResponseDto {
-        return heroService.getHeroesAsync(offset = offset, limit = limit).await()
+        return heroService.getHeroesAsync(offset = offset, limit = limit)
     }
 
     suspend fun loadHeroInfoById(heroId: Long): GreatResult<HeroInfoDto> {
         return GreatResult.Success(
-            heroService.getHeroInfo(heroId = heroId).await().info.results.first()
+            heroService.getHeroInfo(heroId = heroId).info.results.first()
         )
     }
 }

@@ -3,6 +3,7 @@ package com.an9ar.jetheroes.heroesscreen
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.ViewModel
 import com.an9ar.jetheroes.data.dto.GreatResult
+import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsDto
 import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsWrapperDto
 import com.an9ar.jetheroes.data.repository.ComicsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,9 +15,9 @@ class ComicsViewModel
     private val comicsRepository: ComicsRepository
 ) : ViewModel(), LifecycleObserver {
 
-    suspend fun fetchComicsInfo(url: String): GreatResult<ComicsWrapperDto> {
+    suspend fun fetchComicDetailInfo(comicId: String): GreatResult<ComicsDto> {
         return try {
-            comicsRepository.loadComics(url)
+            comicsRepository.loadComicDetailInfo(comicId)
         } catch (exception: Exception) {
             GreatResult.Error(exception)
         }
