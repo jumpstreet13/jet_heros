@@ -11,6 +11,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.an9ar.jetheroes.common.ErrorItem
+import com.an9ar.jetheroes.common.LoadingView
 import com.an9ar.jetheroes.data.dto.GreatResult
 import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsDto
 import com.an9ar.jetheroes.data.dto.getImageUrl
@@ -72,12 +74,20 @@ fun ComicDetailInfoScreen(
                 }
             ) {
                 when (val comicsInfoDto = comicsInfo.value) {
-                    is GreatResult.Progress -> HeroInfoLoading()
+                    is GreatResult.Progress -> LoadingView(modifier = Modifier.fillMaxSize())
                     is GreatResult.Success -> ComicsInfoContent(
                         comicsDto = comicsInfoDto.data,
                         navHostController = navHostController
                     )
-                    is GreatResult.Error -> HeroInfoError(modifier)
+                    is GreatResult.Error -> ErrorItem(
+                        message = comicsInfoDto.exception.message.toString(),
+                        modifier = Modifier.fillMaxSize()
+                    ) {
+                        coroutineScope.launch {
+                            comicsInfo.value = GreatResult.Progress
+                            comicsInfo.value = viewModel.fetchComicDetailInfo(comicsId)
+                        }
+                    }
                 }
             }
         }
