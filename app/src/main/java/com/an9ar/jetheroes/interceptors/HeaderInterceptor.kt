@@ -1,5 +1,6 @@
 package com.an9ar.jetheroes.interceptors
 
+import com.an9ar.jetheroes.BuildConfig
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

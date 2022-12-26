@@ -4,6 +4,7 @@ import com.an9ar.jetheroes.data.dto.comicsinfo.ComicsWrapperResponse
 import com.an9ar.jetheroes.data.dto.heroinfo.HeroInfoResponse
 import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponseDto
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.Url

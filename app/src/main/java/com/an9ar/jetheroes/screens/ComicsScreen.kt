@@ -72,7 +72,7 @@ fun ComicsListContent(
             val comicsInfo =
                 remember { mutableStateOf<GreatResult<ComicsWrapperDto>>(GreatResult.Progress) }
 
-            LaunchedEffect(Unit) {
+            LaunchedEffect(true) {
                 val info = viewModel.fetchComicsInfoById(comicsId)
                 comicsInfo.value = info
             }

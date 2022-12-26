@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 
 @Composable
@@ -120,6 +120,15 @@ fun Chip(modifier: Modifier = Modifier, text: String) {
     }
 }
 
+@Preview(
+    backgroundColor = 0xF6D58F,
+    showBackground = true
+)
+@Composable
+fun JustText(){
+    Text(text = "Hi Bro")
+}
+
 @Preview
 @Composable
 fun ChipPreview() {
@@ -128,7 +137,7 @@ fun ChipPreview() {
     }
 }
 
-@Preview
+@Preview()
 @Composable
 fun LayoutsCodelabPreview() {
     JetHeroesTheme() {

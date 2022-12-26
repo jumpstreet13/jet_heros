@@ -13,7 +13,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-        navHostController: NavHostController
+    navHostController: NavHostController,
 ) {
     SplashContent()
     LaunchedEffect(true) {
@@ -28,9 +28,10 @@ fun SplashScreen(
 fun SplashContent() {
     val image: Painter = painterResource(id = R.drawable.marvel_logo)
     Image(
-            painter = image,
-            modifier = Modifier
-                    .fillMaxSize(),
-            contentDescription = null
+        painter = image,
+        modifier = Modifier
+            .fillMaxSize(),
+        contentDescription = null
     )
 }
+

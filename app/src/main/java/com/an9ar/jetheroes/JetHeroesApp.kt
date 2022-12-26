@@ -1,15 +1,20 @@
 package com.an9ar.jetheroes
 
 import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.an9ar.jetheroes.heroesscreen.ComicsViewModel
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
-import com.an9ar.jetheroes.screens.*
+import com.an9ar.jetheroes.screens.ComicDetailInfoScreen
+import com.an9ar.jetheroes.screens.ComicsScreen
+import com.an9ar.jetheroes.screens.HeroDetailScreen
+import com.an9ar.jetheroes.screens.HeroesListScreen
+import com.an9ar.jetheroes.screens.SplashScreen
 import com.an9ar.jetheroes.theme.AppTheme
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 
