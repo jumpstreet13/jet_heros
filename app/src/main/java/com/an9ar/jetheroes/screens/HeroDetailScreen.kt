@@ -14,6 +14,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.common.ErrorItem
@@ -31,7 +33,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HeroDetailScreen(
     navHostController: NavHostController,
-    heroesViewModel: HeroesViewModel,
+    heroesViewModel: HeroesViewModel = hiltViewModel(),
     heroId: Long
 ) {
     Scaffold(

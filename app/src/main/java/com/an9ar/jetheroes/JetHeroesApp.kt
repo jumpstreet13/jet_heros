@@ -1,15 +1,12 @@
 package com.an9ar.jetheroes
 
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.an9ar.jetheroes.heroesscreen.ComicsViewModel
-import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.screens.ComicDetailInfoScreen
 import com.an9ar.jetheroes.screens.ComicsScreen
 import com.an9ar.jetheroes.screens.HeroDetailScreen
@@ -19,10 +16,7 @@ import com.an9ar.jetheroes.theme.AppTheme
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 
 @Composable
-fun JetHeroessApp(
-    heroesViewModel: HeroesViewModel,
-    comicsViewModel: ComicsViewModel
-) {
+fun JetHeroessApp() {
     JetHeroesTheme {
         Surface(color = AppTheme.colors.background) {
             val navController = rememberNavController()
@@ -31,10 +25,7 @@ fun JetHeroessApp(
                     SplashScreen(navHostController = navController)
                 }
                 composable("heroesList") {
-                    HeroesListScreen(
-                        navHostController = navController,
-                        heroesViewModel = heroesViewModel
-                    )
+                    HeroesListScreen(navHostController = navController)
                 }
                 composable(
                     "comicsInfo/{comicsId}",
@@ -43,7 +34,6 @@ fun JetHeroessApp(
                     backStackEntry.arguments?.getString("comicsId")?.let {
                         ComicsScreen(
                             navHostController = navController,
-                            viewModel = comicsViewModel,
                             comicsId = it
                         )
                     }
@@ -55,7 +45,6 @@ fun JetHeroessApp(
                     backStackEntry.arguments?.getLong("heroId")?.let { id ->
                         HeroDetailScreen(
                             navHostController = navController,
-                            heroesViewModel = heroesViewModel,
                             heroId = id
                         )
                     }
@@ -67,7 +56,6 @@ fun JetHeroessApp(
                     backStackEntry.arguments?.getString("comicInfoId")?.let { id ->
                         ComicDetailInfoScreen(
                             navHostController = navController,
-                            viewModel = comicsViewModel,
                             comicsId = id
                         )
                     }
