@@ -1,8 +1,13 @@
 package com.an9ar.jetheroes.examples
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +15,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -28,7 +34,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 
-@Preview()
+
+@Preview
+@Composable
+fun AnimationExample() {
+    var switch by remember { mutableStateOf(false) }
+    Column(horizontalAlignment = Alignment.CenterHorizontally)
+    {
+        Button(onClick = { switch = !switch }) {
+            Text(text = "Press Here!")
+        }
+        val bgColor: Color by animateColorAsState(if (switch) Color.Red else Color.Green,
+            animationSpec = tween(1000, easing = LinearEasing)
+        )
+        Box(modifier = Modifier.size(100.dp).background(color = bgColor))
+    }
+}
+
+@Preview
 @Composable
 fun MainScreen() {
 
@@ -52,9 +75,10 @@ fun MainScreen() {
 
         Spacer(modifier = Modifier.height(20.dp))
 
+
         AnimatedVisibility(
             visible = boxVisible,
-            enter = fadeIn(),
+            enter = fadeIn() + slideInHorizontally() + slideInVertically(),
             exit = slideOutVertically() + shrinkVertically()
         ) {
             Box(

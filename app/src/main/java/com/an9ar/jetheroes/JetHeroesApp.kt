@@ -15,9 +15,12 @@ import com.an9ar.jetheroes.screens.SplashScreen
 import com.an9ar.jetheroes.theme.AppTheme
 import com.an9ar.jetheroes.theme.JetHeroesTheme
 
+typealias ThemeToggle = () -> Unit
+
 @Composable
-fun JetHeroessApp() {
-    JetHeroesTheme {
+fun JetHeroessApp(onToggleTheme: () -> Unit, darkTheme: Boolean) {
+
+    JetHeroesTheme(darkTheme = darkTheme) {
         Surface(color = AppTheme.colors.background) {
             val navController = rememberNavController()
             NavHost(navController = navController, startDestination = "splash") {
@@ -25,7 +28,7 @@ fun JetHeroessApp() {
                     SplashScreen(navHostController = navController)
                 }
                 composable("heroesList") {
-                    HeroesListScreen(navHostController = navController)
+                    HeroesListScreen(navHostController = navController, onToggleTheme = onToggleTheme)
                 }
                 composable(
                     "comicsInfo/{comicsId}",

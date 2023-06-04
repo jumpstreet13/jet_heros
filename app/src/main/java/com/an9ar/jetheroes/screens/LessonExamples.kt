@@ -70,7 +70,7 @@ class CallToActionViewButton @JvmOverloads constructor(
 
     @Composable
     override fun Content() {
-        JetHeroesTheme {
+        JetHeroesTheme(true) {
             CallToActionButton(
                 text = text,
                 onClick = onClick

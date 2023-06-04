@@ -1,6 +1,7 @@
 package com.an9ar.jetheroes.viewgroups
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -132,7 +133,7 @@ fun JustText(){
 @Preview
 @Composable
 fun ChipPreview() {
-    JetHeroesTheme {
+    JetHeroesTheme(true) {
         Chip(text = "Hi there")
     }
 }
@@ -140,7 +141,7 @@ fun ChipPreview() {
 @Preview()
 @Composable
 fun LayoutsCodelabPreview() {
-    JetHeroesTheme() {
+    JetHeroesTheme(true) {
         BodyContent()
     }
 }
