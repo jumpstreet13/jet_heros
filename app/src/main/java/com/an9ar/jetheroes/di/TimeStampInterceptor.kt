@@ -15,8 +15,11 @@ open class TimeStampInterceptor : Interceptor {
 
     private fun proceedRequestWithTimestamp(chain: Interceptor.Chain): Response {
         var request = chain.request()
+        // Using static timestamp "1" to match the hardcoded hash in AuthorizationInterceptor
+        // For production: Use dynamic timestamp and calculate hash as MD5(ts + privateKey + publicKey)
+        val timestamp = "1"
         val url = request.url.newBuilder()
-            .addQueryParameter(TIMESTAMP, "1")
+            .addQueryParameter(TIMESTAMP, timestamp)
             .build()
         request = request.newBuilder().url(url).build()
         return chain.proceed(request)

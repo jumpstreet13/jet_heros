@@ -14,12 +14,18 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(
     navHostController: NavHostController,
+    onNavigateToHeroes: (() -> Unit)? = null
 ) {
     SplashContent()
     LaunchedEffect(true) {
         delay(500)
-        navHostController.navigate("heroesList") {
-            popUpTo("splash") { inclusive = true }
+        if (onNavigateToHeroes != null) {
+            onNavigateToHeroes()
+        } else {
+            // Fallback for old API
+            navHostController.navigate("heroesList") {
+                popUpTo("splash") { inclusive = true }
+            }
         }
     }
 }

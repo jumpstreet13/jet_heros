@@ -7,6 +7,17 @@ import java.io.IOException
 private const val AUTHORIZATION_HEADER = "apikey"
 private const val HASH = "hash"
 
+/**
+ * Marvel API Authentication Interceptor
+ * 
+ * Note: To use your own Marvel API keys:
+ * 1. Register at https://developer.marvel.com/
+ * 2. Get your public and private API keys
+ * 3. Update the PUBLIC_KEY and HASH values below
+ * 4. Hash is calculated as: MD5(ts + privateKey + publicKey)
+ * 
+ * Current values are test/demo keys - replace with your own for production use.
+ */
 open class AuthorizationInterceptor : Interceptor {
 
     @Throws(IOException::class)

@@ -31,8 +31,8 @@ import com.an9ar.jetheroes.brandbook.DataViewItem
 import com.an9ar.jetheroes.common.ErrorItem
 import com.an9ar.jetheroes.common.LoadingItem
 import com.an9ar.jetheroes.common.LoadingView
-import com.an9ar.jetheroes.data.dto.heroinfo.HeroResponse
-import com.an9ar.jetheroes.data.dto.heroinfo.toDataView
+import com.an9ar.jetheroes.data.dto.heroinfo.HeroInfoDto
+import com.an9ar.jetheroes.data.dto.heroinfo.toDataViewModel
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -82,7 +82,7 @@ fun HeroesListContent(
         }
     ) {
         Surface(color = AppTheme.colors.background) {
-            val lazyMovieItems: LazyPagingItems<HeroResponse> =
+            val lazyMovieItems: LazyPagingItems<HeroInfoDto> =
                 heroesViewModel.heroes.collectAsLazyPagingItems()
             val swipeRefreshState = rememberSwipeRefreshState(false)
             val context = LocalContext.current
@@ -93,10 +93,12 @@ fun HeroesListContent(
             ) {
                 LazyColumn {
                     items(lazyMovieItems) { hero ->
-                        DataViewItem(
-                            dataViewModel = hero!!.toDataView("hero/${hero.id}"),
-                            navHostController = navHostController
-                        )
+                        hero?.let {
+                            DataViewItem(
+                                dataViewModel = it.toDataViewModel("hero/${it.id.toLongOrNull() ?: 0L}"),
+                                navHostController = navHostController
+                            )
+                        }
                     }
 
                     lazyMovieItems.apply {
@@ -125,7 +127,7 @@ fun HeroesListContent(
                                         ErrorItem(
                                             message = e.error.localizedMessage!!,
                                             modifier = Modifier.fillParentMaxSize(),
-                                            onClickRetry = { retry() }
+                                            onClickRetry = { lazyMovieItems.retry() }
                                         )
                                     }
                                 }
@@ -135,7 +137,7 @@ fun HeroesListContent(
                                 item {
                                     ErrorItem(
                                         message = e.error.localizedMessage!!,
-                                        onClickRetry = { retry() }
+                                        onClickRetry = { lazyMovieItems.retry() }
                                     )
                                 }
                             }

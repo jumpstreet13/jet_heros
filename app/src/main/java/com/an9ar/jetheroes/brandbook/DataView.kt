@@ -7,6 +7,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.theme.AppTheme
+import com.an9ar.jetheroes.utils.FallbackImageHelper
 import com.google.accompanist.glide.rememberGlidePainter
 
 @Composable
@@ -46,20 +51,32 @@ fun DataViewItem(
                 modifier = Modifier.weight(1f)
             )
             DataViewImage(
-                imageUrl = dataViewModel.imageUrl
+                imageUrl = dataViewModel.imageUrl,
+                heroName = dataViewModel.title
             )
         }
     }
 }
 
 @Composable
-fun DataViewImage(imageUrl: String) {
+fun DataViewImage(imageUrl: String, heroName: String = "") {
+    // If URL is from superherodb.com (known to have 403 issues), use fallback immediately
+    // Otherwise try original URL first
+    val shouldUseFallback = remember(imageUrl) { 
+        imageUrl.contains("superherodb.com", ignoreCase = true)
+    }
+    val fallbackUrl = remember(heroName) { 
+        FallbackImageHelper.getFallbackImageForHero(heroName.ifEmpty { "default" })
+    }
+    val finalImageUrl = if (shouldUseFallback) fallbackUrl else imageUrl
+    
     Image(
         painter = rememberGlidePainter(
-            request = imageUrl,
-            //fadeIn = true,
-            // todo плохая идея
-            requestBuilder = { placeholder(R.drawable.default_image) }
+            request = finalImageUrl,
+            requestBuilder = { 
+                placeholder(R.drawable.default_image)
+                    .error(R.drawable.default_image)
+            }
         ),
         contentDescription = stringResource(R.string.hero_image_description),
         contentScale = ContentScale.Crop,

@@ -2,7 +2,7 @@ package com.an9ar.jetheroes.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -26,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,17 +33,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.core.net.toUri
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.an9ar.jetheroes.R
 import com.an9ar.jetheroes.common.ErrorItem
 import com.an9ar.jetheroes.common.LoadingView
 import com.an9ar.jetheroes.data.dto.GreatResult
-import com.an9ar.jetheroes.data.dto.getImageUrl
 import com.an9ar.jetheroes.data.dto.heroinfo.HeroInfoDto
 import com.an9ar.jetheroes.heroesscreen.HeroesViewModel
 import com.an9ar.jetheroes.theme.AppTheme
+import com.an9ar.jetheroes.utils.FallbackImageHelper
 import com.google.accompanist.glide.rememberGlidePainter
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
@@ -140,59 +139,28 @@ fun HeroInfoContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        BigHeroImage(url = heroInfoDto.thumbnail.getImageUrl())
+        BigHeroImage(url = heroInfoDto.image.url, heroName = heroInfoDto.name)
         Spacer(modifier = Modifier.height(16.dp))
         BigHeroInfo(heroInfo = heroInfoDto)
-        ComicsItem(navHostController, heroInfoDto)
+        PowerStatsSection(heroInfoDto.powerstats)
+        BiographySection(heroInfoDto.biography)
+        AppearanceSection(heroInfoDto.appearance)
+        WorkSection(heroInfoDto.work)
+        ConnectionsSection(heroInfoDto.connections)
     }
 }
 
 @Composable
-fun ComicsItem(
-    navHostController: NavHostController,
-    heroInfoDto: HeroInfoDto
-) {
-    Row(
-        modifier = Modifier
-            .padding(16.dp)
-            .clickable {
-                navHostController.navigate(
-                    "comicsInfo/${
-                        heroInfoDto.comicsDto.collectionUri.toUri().path
-                            ?.split(
-                                "/"
-                            )
-                            ?.get(4)
-                    }"
-                )
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Image(
-            painter = rememberGlidePainter(
-                request = "https://static.wikia.nocookie.net/character-power/images/8/8f/DC_Comics.png/revision/latest/scale-to-width-down/700?cb=20190203204448&path-prefix=ru",
-                fadeIn = true,
-            ),
-            contentDescription = "Comics",
-            modifier = Modifier
-                .size(
-                    height = 64.dp,
-                    width = 84.dp
-                )
-                .padding(end = 16.dp)
-                .clip(RoundedCornerShape(6.dp)),
-            contentScale = ContentScale.Crop
-        )
-        Text(
-            text = "Watch all comics",
-            color = AppTheme.colors.text,
-            style = AppTheme.typography.textMediumBold
-        )
+fun BigHeroImage(url: String, heroName: String = "") {
+    // If URL is from superherodb.com (known to have 403 issues), use fallback immediately
+    val shouldUseFallback = remember(url) { 
+        url.contains("superherodb.com", ignoreCase = true)
     }
-}
-
-@Composable
-fun BigHeroImage(url: String) {
+    val fallbackUrl = remember(heroName) { 
+        FallbackImageHelper.getFallbackImageForHero(heroName.ifEmpty { "default" })
+    }
+    val finalImageUrl = if (shouldUseFallback) fallbackUrl else url
+    
     Card(
         shape = RoundedCornerShape(32.dp),
         backgroundColor = AppTheme.colors.card,
@@ -203,7 +171,7 @@ fun BigHeroImage(url: String) {
     ) {
         Image(
             painter = rememberGlidePainter(
-                request = url,
+                request = finalImageUrl,
                 fadeIn = true,
                 requestBuilder = { placeholder(R.drawable.default_image) }
             ),
@@ -226,10 +194,174 @@ fun BigHeroInfo(heroInfo: HeroInfoDto) {
             color = AppTheme.colors.text,
             style = AppTheme.typography.h3
         )
+        Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = heroInfo.description,
+            text = heroInfo.getDescription(),
             color = AppTheme.colors.text,
             style = AppTheme.typography.textMediumBold
         )
+    }
+}
+
+@Composable
+fun PowerStatsSection(powerstats: com.an9ar.jetheroes.data.dto.heroinfo.PowerStats?) {
+    powerstats?.let { stats ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            backgroundColor = AppTheme.colors.card
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Power Stats",
+                    color = AppTheme.colors.text,
+                    style = AppTheme.typography.textMediumBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                stats.intelligence?.let { StatRow("Intelligence", it) }
+                stats.strength?.let { StatRow("Strength", it) }
+                stats.speed?.let { StatRow("Speed", it) }
+                stats.durability?.let { StatRow("Durability", it) }
+                stats.power?.let { StatRow("Power", it) }
+                stats.combat?.let { StatRow("Combat", it) }
+            }
+        }
+    }
+}
+
+@Composable
+fun StatRow(label: String, value: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = label,
+            color = AppTheme.colors.text,
+            style = AppTheme.typography.textMediumBold
+        )
+        Text(
+            text = value,
+            color = AppTheme.colors.text,
+            style = AppTheme.typography.textMediumBold
+        )
+    }
+}
+
+@Composable
+fun BiographySection(biography: com.an9ar.jetheroes.data.dto.heroinfo.Biography?) {
+    biography?.let { bio ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            backgroundColor = AppTheme.colors.card
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Biography",
+                    color = AppTheme.colors.text,
+                    style = AppTheme.typography.textMediumBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                bio.fullName?.takeIf { it != "-" }?.let { InfoRow("Full Name", it) }
+                bio.placeOfBirth?.takeIf { it != "-" }?.let { InfoRow("Place of Birth", it) }
+                bio.firstAppearance?.takeIf { it != "-" }?.let { InfoRow("First Appearance", it) }
+                bio.publisher?.takeIf { it != "-" }?.let { InfoRow("Publisher", it) }
+                bio.alignment?.takeIf { it != "-" }?.let { InfoRow("Alignment", it) }
+            }
+        }
+    }
+}
+
+@Composable
+fun InfoRow(label: String, value: String) {
+    Column(modifier = Modifier.padding(vertical = 4.dp)) {
+        Text(
+            text = label,
+            color = AppTheme.colors.text,
+            style = AppTheme.typography.textMediumBold
+        )
+        Text(
+            text = value,
+            color = AppTheme.colors.text,
+            style = AppTheme.typography.textMediumBold
+        )
+    }
+}
+
+@Composable
+fun AppearanceSection(appearance: com.an9ar.jetheroes.data.dto.heroinfo.Appearance?) {
+    appearance?.let { app ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            backgroundColor = AppTheme.colors.card
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Appearance",
+                    color = AppTheme.colors.text,
+                    style = AppTheme.typography.textMediumBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                app.gender?.takeIf { it != "-" }?.let { InfoRow("Gender", it) }
+                app.race?.takeIf { it != "-" }?.let { InfoRow("Race", it) }
+                app.height?.joinToString(", ")?.takeIf { it != "-" }?.let { InfoRow("Height", it) }
+                app.weight?.joinToString(", ")?.takeIf { it != "-" }?.let { InfoRow("Weight", it) }
+                app.eyeColor?.takeIf { it != "-" }?.let { InfoRow("Eye Color", it) }
+                app.hairColor?.takeIf { it != "-" }?.let { InfoRow("Hair Color", it) }
+            }
+        }
+    }
+}
+
+@Composable
+fun WorkSection(work: com.an9ar.jetheroes.data.dto.heroinfo.Work?) {
+    work?.let { w ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            backgroundColor = AppTheme.colors.card
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Work",
+                    color = AppTheme.colors.text,
+                    style = AppTheme.typography.textMediumBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                w.occupation?.takeIf { it != "-" }?.let { InfoRow("Occupation", it) }
+                w.base?.takeIf { it != "-" }?.let { InfoRow("Base", it) }
+            }
+        }
+    }
+}
+
+@Composable
+fun ConnectionsSection(connections: com.an9ar.jetheroes.data.dto.heroinfo.Connections?) {
+    connections?.let { conn ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            backgroundColor = AppTheme.colors.card
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text(
+                    text = "Connections",
+                    color = AppTheme.colors.text,
+                    style = AppTheme.typography.textMediumBold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                conn.groupAffiliation?.takeIf { it != "-" }?.let { InfoRow("Group Affiliation", it) }
+                conn.relatives?.takeIf { it != "-" }?.let { InfoRow("Relatives", it) }
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -32,7 +33,7 @@ object NetworkModule {
         val contentType = "application/json".toMediaTypeOrNull()
             ?: throw IllegalArgumentException("Should be not null")
         return Retrofit.Builder()
-            .baseUrl("https://gateway.marvel.com/")
+            .baseUrl("https://superheroapi.com/api/")
             .addConverterFactory(json.asConverterFactory(contentType))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .client(okHttpClient)
@@ -46,9 +47,11 @@ object NetworkModule {
         otherInterceptor: HeaderInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(30, TimeUnit.SECONDS)
+            .writeTimeout(30, TimeUnit.SECONDS)
+            .callTimeout(60, TimeUnit.SECONDS)
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(AuthorizationInterceptor())
-            .addInterceptor(TimeStampInterceptor())
             .addInterceptor(otherInterceptor)
             .build()
     }
